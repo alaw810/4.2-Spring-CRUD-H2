@@ -19,6 +19,13 @@ public class FruitServiceImpl implements FruitService{
     public FruitResponseDTO addFruit(FruitRequestDTO request) {
         Fruit fruit = new Fruit(null, request.name(), request.weightInKilos());
         Fruit saved = fruitRepository.save(fruit);
-        return new FruitResponseDTO(saved.getId(), saved.getName(), saved.getWeightInKilos());
+        return mapToDto(saved);
+    }
+
+    private FruitResponseDTO mapToDto(Fruit fruit) {
+        return new FruitResponseDTO(
+                fruit.getId(),
+                fruit.getName(),
+                fruit.getWeightInKilos());
     }
 }
