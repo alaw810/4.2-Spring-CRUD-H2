@@ -94,4 +94,11 @@ public class FruitControllerTest {
                 .andExpect(jsonPath("$.name").value("Pear"))
                 .andExpect(jsonPath("$.weightInKilos").value(2));
     }
+
+    @Test
+    void getFruitById_returns404_whenFruitDoesNotExist() throws Exception {
+        mockMvc.perform(get("/fruits/999"))
+                .andExpect(status().isNotFound());
+    }
+
 }
