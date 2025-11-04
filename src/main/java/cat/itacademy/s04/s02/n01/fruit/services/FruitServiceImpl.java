@@ -4,6 +4,7 @@ import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
 import cat.itacademy.s04.s02.n01.fruit.model.Fruit;
 import cat.itacademy.s04.s02.n01.fruit.repository.FruitRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +36,19 @@ public class FruitServiceImpl implements FruitService{
     public Optional<FruitResponseDTO> getFruitById(Long id) {
         return fruitRepository.findById(id)
                 .map(this::mapToDto);
+    }
+
+    @Override
+    public FruitResponseDTO updateFruit(Long id, FruitRequestDTO request) {
+        Fruit fruit = fruitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fruit with ID " + id + " not found"));
+
+        fruit.setName(request.name());
+        fruit.setWeightInKilos(request.weightInKilos());
+
+        Fruit updated = fruitRepository.save(fruit);
+
+        return mapToDto(updated);
     }
 
     private FruitResponseDTO mapToDto(Fruit fruit) {

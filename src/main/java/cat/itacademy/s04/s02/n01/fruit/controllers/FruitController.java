@@ -3,6 +3,7 @@ package cat.itacademy.s04.s02.n01.fruit.controllers;
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
 import cat.itacademy.s04.s02.n01.fruit.services.FruitService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +37,18 @@ public class FruitController {
         return fruitService.getFruitById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FruitResponseDTO> updateFruit(
+            @PathVariable Long id,
+            @Valid @RequestBody FruitRequestDTO request) {
+
+        try {
+            FruitResponseDTO updated = fruitService.updateFruit(id, request);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
