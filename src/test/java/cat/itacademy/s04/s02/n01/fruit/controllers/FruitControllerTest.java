@@ -13,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -201,6 +200,52 @@ public class FruitControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Apricot"))
                 .andExpect(jsonPath("$.weightInKilos").value(2));
+
+    }
+
+    @Test
+    void deleteFruit_removesFruitFromDatabase() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Pitaya", 7);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        mockMvc.perform(delete("/fruits/" + id))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/fruits"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void deleteFruit_returns404_whenFruitDoesNotExist() throws Exception {
+        mockMvc.perform(delete("/fruits/999"))
+                .andExpect((status().isNotFound()));
+    }
+
+    @Test
+    void deleteFruit_doesNotReturnBody_whenSuccessful() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Cherry", 2);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        mockMvc.perform(delete("/fruits/" + id))
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
 
     }
 }
