@@ -31,7 +31,7 @@ public class FruitControllerTest {
 
     @BeforeEach
     void cleanDatabase() {
-        fruitRepository.
+        fruitRepository.deleteAll();
     }
 
     @Test
