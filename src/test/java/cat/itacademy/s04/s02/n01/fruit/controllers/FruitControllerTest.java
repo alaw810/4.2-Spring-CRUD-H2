@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,5 +35,25 @@ public class FruitControllerTest {
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value("Apple"))
                 .andExpect(jsonPath("$.weightInKilos").value(5));
+    }
+
+    @Test
+    void getAllFruits_returnsListOfFruits() throws Exception {
+        FruitRequestDTO fruit1 = new FruitRequestDTO("Banana", 4);
+        FruitRequestDTO fruit2 = new FruitRequestDTO("Pineapple", 5);
+
+        mockMvc.perform(post("/fruits")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(fruit1)));
+
+        mockMvc.perform(post("/fruits")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(fruit2)));
+
+        mockMvc.perform(get("/fruits"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].name").value("Banana "))
+                .andExpect(jsonPath("$[1].name").value("Pineapple"));
     }
 }
