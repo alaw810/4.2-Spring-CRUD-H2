@@ -53,7 +53,7 @@ public class FruitControllerTest {
         mockMvc.perform(get("/fruits"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("Banana "))
+                .andExpect(jsonPath("$[0].name").value("Banana"))
                 .andExpect(jsonPath("$[1].name").value("Pineapple"));
     }
 }

@@ -5,10 +5,9 @@ import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
 import cat.itacademy.s04.s02.n01.fruit.services.FruitService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/fruits")
@@ -24,5 +23,11 @@ public class FruitController {
     public ResponseEntity<FruitResponseDTO> createFruit(@Valid @RequestBody FruitRequestDTO request) {
         FruitResponseDTO created = fruitService.addFruit(request);
         return ResponseEntity.status(201).body(created);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FruitResponseDTO>> getAllFruits() {
+        List<FruitResponseDTO> fruits = fruitService.getAllFruits();
+        return ResponseEntity.ok(fruits);
     }
 }
