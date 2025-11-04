@@ -12,8 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -101,4 +100,107 @@ public class FruitControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void updateFruit_returnsUpdatedFruit_whenDataIsValid() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Melon", 3);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        FruitRequestDTO updatedFruit = new FruitRequestDTO("Watermelon", 6);
+
+        mockMvc.perform(put("/fruits/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedFruit)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value("Watermelon"))
+                .andExpect(jsonPath("$.weightInKilos").value(6));
+    }
+
+    @Test
+    void updateFruit_returns404_whenFruitDoesNotExist() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Mango", 2);
+
+        mockMvc.perform(put("/fruits/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateFruit_returns400_whenNameIsBlank() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Orange", 5);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        FruitRequestDTO invalid = new FruitRequestDTO("", 5);
+
+        mockMvc.perform(put("/fruits/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalid)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    void updateFruit_returns400_whenWeightIsNotPositive() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Peach", 8);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        FruitRequestDTO invalid = new FruitRequestDTO("Peach", -8);
+
+        mockMvc.perform(put("/fruits/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalid)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void updateFruit_persistsChangesInDatabase() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Grapes", 1);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        FruitRequestDTO updated = new FruitRequestDTO("Apricot", 2);
+
+        mockMvc.perform(put("/fruits/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updated)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/fruits/" + id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Apricot"))
+                .andExpect(jsonPath("$.weightInKilos").value(2));
+
+    }
 }
