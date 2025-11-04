@@ -7,6 +7,7 @@ import cat.itacademy.s04.s02.n01.fruit.repository.FruitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FruitServiceImpl implements FruitService{
@@ -28,6 +29,12 @@ public class FruitServiceImpl implements FruitService{
     public List<FruitResponseDTO> getAllFruits() {
         List<Fruit> fruits = fruitRepository.findAll();
         return mapToDtoList(fruits);
+    }
+
+    @Override
+    public Optional<FruitResponseDTO> getFruitById(Long id) {
+        return fruitRepository.findById(id)
+                .map(this::mapToDto);
     }
 
     private FruitResponseDTO mapToDto(Fruit fruit) {

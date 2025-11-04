@@ -4,8 +4,10 @@ import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FruitService {
     FruitResponseDTO addFruit(FruitRequestDTO request);
     List<FruitResponseDTO> getAllFruits();
+    Optional<FruitResponseDTO> getFruitById(Long id);
 }
