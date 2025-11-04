@@ -43,22 +43,13 @@ public class FruitController {
     public ResponseEntity<FruitResponseDTO> updateFruit(
             @PathVariable Long id,
             @Valid @RequestBody FruitRequestDTO request) {
-
-        try {
-            FruitResponseDTO updated = fruitService.updateFruit(id, request);
-            return ResponseEntity.ok(updated);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        FruitResponseDTO updated = fruitService.updateFruit(id, request);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFruit(@PathVariable Long id) {
-        try {
-            fruitService.deleteFruit(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        fruitService.deleteFruit(id);
+        return ResponseEntity.noContent().build();
     }
 }
