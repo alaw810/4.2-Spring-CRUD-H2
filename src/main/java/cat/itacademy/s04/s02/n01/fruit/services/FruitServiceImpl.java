@@ -26,10 +26,8 @@ public class FruitServiceImpl implements FruitService{
 
     @Override
     public List<FruitResponseDTO> getAllFruits() {
-        return fruitRepository.findAll()
-                .stream()
-                .map(this::mapToDto)
-                .toList();
+        List<Fruit> fruits = fruitRepository.findAll();
+        return mapToDtoList(fruits);
     }
 
     private FruitResponseDTO mapToDto(Fruit fruit) {
@@ -38,4 +36,11 @@ public class FruitServiceImpl implements FruitService{
                 fruit.getName(),
                 fruit.getWeightInKilos());
     }
+
+    private List<FruitResponseDTO> mapToDtoList(List<Fruit> fruits) {
+        return fruits.stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
 }

@@ -1,7 +1,9 @@
 package cat.itacademy.s04.s02.n01.fruit.controllers;
 
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
+import cat.itacademy.s04.s02.n01.fruit.repository.FruitRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +25,14 @@ public class FruitControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private FruitRepository fruitRepository;
+
+    @BeforeEach
+    void cleanDatabase() {
+        fruitRepository.
+    }
 
     @Test
     void addFruit_returnsCreatedFruit() throws Exception {
@@ -56,4 +66,12 @@ public class FruitControllerTest {
                 .andExpect(jsonPath("$[0].name").value("Banana"))
                 .andExpect(jsonPath("$[1].name").value("Pineapple"));
     }
+
+    @Test
+    void getAllFruits_returnsEmptyList_whenNoFruitsExist() throws Exception {
+        mockMvc.perform(get("/fruits"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
 }
