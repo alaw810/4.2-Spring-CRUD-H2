@@ -1,6 +1,7 @@
 package cat.itacademy.s04.s02.n01.fruit.controllers;
 
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
+import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
 import cat.itacademy.s04.s02.n01.fruit.repository.FruitRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,4 +75,23 @@ public class FruitControllerTest {
                 .andExpect(jsonPath("$.length()").value(0));
     }
 
+    @Test
+    void getFruitById_returnsCorrectFruit() throws Exception {
+        FruitRequestDTO fruit = new FruitRequestDTO("Pear", 2);
+
+        String response = mockMvc.perform(post("/fruits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fruit)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Long id = objectMapper.readValue(response, FruitResponseDTO.class).id();
+
+        mockMvc.perform(get("/fruits/" + id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value("Pear"))
+                .andExpect(jsonPath("$.weightInKilos").value(2));
+    }
 }
