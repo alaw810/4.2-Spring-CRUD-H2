@@ -51,4 +51,14 @@ public class FruitController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFruit(@PathVariable Long id) {
+        try {
+            fruitService.deleteFruit(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

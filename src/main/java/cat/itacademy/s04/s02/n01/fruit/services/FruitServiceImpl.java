@@ -51,6 +51,14 @@ public class FruitServiceImpl implements FruitService{
         return mapToDto(updated);
     }
 
+    @Override
+    public void deleteFruit(Long id) {
+        Fruit fruit = fruitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fruit with ID " + id + " not found"));
+
+        fruitRepository.delete(fruit);
+    }
+
     private FruitResponseDTO mapToDto(Fruit fruit) {
         return new FruitResponseDTO(
                 fruit.getId(),
