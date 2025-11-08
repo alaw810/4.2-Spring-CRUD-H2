@@ -80,7 +80,7 @@ class FruitServiceImplTest {
 
         assertThatThrownBy(() -> fruitService.getFruitById(1L))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("Fruit not found");
+                .hasMessageContaining("Fruit with ID " + 1L + " not found");
     }
 
     @Test
@@ -102,24 +102,25 @@ class FruitServiceImplTest {
 
         assertThatThrownBy(() -> fruitService.updateFruit(1L, new FruitRequestDTO("Orange", 5)))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("Fruit not found");
+                .hasMessageContaining("Fruit with ID " + 1L + " not found");
     }
 
     @Test
     void deleteFruit_WhenExists_ShouldCallRepositoryDelete() {
-        when(fruitRepository.existsById(1L)).thenReturn(true);
+        when(fruitRepository.findById(1L)).thenReturn(Optional.of(fruit));
 
         fruitService.deleteFruit(1L);
 
-        verify(fruitRepository).deleteById(1L);
+        verify(fruitRepository).delete(fruit);
+        verify(fruitRepository, never()).deleteById(anyLong());
     }
 
     @Test
     void deleteFruit_WhenNotExists_ShouldThrowException() {
-        when(fruitRepository.existsById(1L)).thenReturn(false);
+        when(fruitRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> fruitService.deleteFruit(1L))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("Fruit not found");
+                .hasMessageContaining("Fruit with ID " + 1L + " not found");
     }
 }
