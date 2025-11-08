@@ -1,7 +1,7 @@
-package cat.itacademy.s04.s02.n01.fruit.services;
+package cat.itacademy.s04.t02.n01.fruit.services;
 
-import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
-import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
+import cat.itacademy.s04.t02.n01.fruit.dto.FruitRequestDTO;
+import cat.itacademy.s04.t02.n01.fruit.dto.FruitResponseDTO;
 
 import java.util.List;
 import java.util.Optional;

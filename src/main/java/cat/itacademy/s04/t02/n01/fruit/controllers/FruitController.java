@@ -1,9 +1,8 @@
-package cat.itacademy.s04.s02.n01.fruit.controllers;
+package cat.itacademy.s04.t02.n01.fruit.controllers;
 
-import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
-import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
-import cat.itacademy.s04.s02.n01.fruit.services.FruitService;
-import jakarta.persistence.EntityNotFoundException;
+import cat.itacademy.s04.t02.n01.fruit.dto.FruitRequestDTO;
+import cat.itacademy.s04.t02.n01.fruit.dto.FruitResponseDTO;
+import cat.itacademy.s04.t02.n01.fruit.services.FruitService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

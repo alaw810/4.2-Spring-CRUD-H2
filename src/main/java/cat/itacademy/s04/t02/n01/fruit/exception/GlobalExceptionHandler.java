@@ -1,4 +1,4 @@
-package cat.itacademy.s04.s02.n01.fruit.exception;
+package cat.itacademy.s04.t02.n01.fruit.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

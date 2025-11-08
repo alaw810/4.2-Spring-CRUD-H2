@@ -1,9 +1,9 @@
-package cat.itacademy.s04.s02.n01.fruit.services;
+package cat.itacademy.s04.t02.n01.fruit.services;
 
-import cat.itacademy.s04.s02.n01.fruit.dto.FruitRequestDTO;
-import cat.itacademy.s04.s02.n01.fruit.dto.FruitResponseDTO;
-import cat.itacademy.s04.s02.n01.fruit.model.Fruit;
-import cat.itacademy.s04.s02.n01.fruit.repository.FruitRepository;
+import cat.itacademy.s04.t02.n01.fruit.dto.FruitRequestDTO;
+import cat.itacademy.s04.t02.n01.fruit.dto.FruitResponseDTO;
+import cat.itacademy.s04.t02.n01.fruit.model.Fruit;
+import cat.itacademy.s04.t02.n01.fruit.repository.FruitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

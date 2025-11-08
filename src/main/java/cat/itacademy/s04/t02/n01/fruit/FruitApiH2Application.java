@@ -1,4 +1,4 @@
-package cat.itacademy.s04.s02.n01.fruit;
+package cat.itacademy.s04.t02.n01.fruit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
