@@ -1,6 +1,6 @@
-# 🍎 Level 1: Fruit API (H2)
+# 🍎 REST API with Spring Boot and H2
 
-## 📄 Description – Exercise Statement
+## 📄 Description
 
 This project consists of developing a **REST API** using **Spring Boot** to manage a fruit store’s stock.  
 It allows users to **create, read, update, and delete** fruits, each of which has a name and a weight in kilograms.
@@ -42,8 +42,8 @@ To run the project locally, make sure you have:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/alaw810/4.2-Spring-CRUD-Level1.git
-   cd 4.2-Spring-CRUD-Level1
+   git clone https://github.com/alaw810/4.2-Spring-CRUD-H2.git
+   cd 4.2-Spring-CRUD-H2
    ```
 
 2. Build the project:
@@ -148,4 +148,8 @@ mvn test
 
 ---
 
-© 2025 – Developed by **Adrià Lorente** as part of the IT Academy Back-End Java Bootcamp.
+## 🧠 Author
+
+**Adrià Lorente**  
+📍 IT Academy – Java Back-End Development  
+📚 Exercise: *S04.T02.N01 – API REST with Spring Boot (Level 1 - H2)*  
