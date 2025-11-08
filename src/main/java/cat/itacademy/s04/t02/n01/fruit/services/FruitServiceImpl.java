@@ -34,8 +34,9 @@ public class FruitServiceImpl implements FruitService{
 
     @Override
     public Optional<FruitResponseDTO> getFruitById(Long id) {
-        return fruitRepository.findById(id)
-                .map(this::mapToDto);
+        Fruit fruit = fruitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fruit with ID " + id + " not found"));
+        return Optional.of(mapToDto(fruit));
     }
 
     @Override
